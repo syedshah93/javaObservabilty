@@ -17,9 +17,6 @@ services:
       - ./plugins.txt:/usr/share/jenkins/ref/plugins.txt
     command: >
       /bin/bash -c "jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt && /usr/bin/tini -- /usr/local/bin/jenkins.sh"
-      
-
-
     environment:
       JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"
     networks:
@@ -33,7 +30,7 @@ services:
       JENKINS_URL: http://jenkins:8080
       JENKINS_AGENT_NAME: "agent-1"
       JENKINS_AGENT_WORKDIR: "/home/jenkins"
-      JENKINS_SECRET: "a9f02f4f69fb2bdf956e506746add732be21e0b62eb05a356077865d9a97a038"  # Use the secret generated in Jenkins
+      JENKINS_SECRET: ""  # Use the secret generated in Jenkins
       JENKINS_AGENT_PORT: "50000"
       JAVA_OPTS: "-Dorg.jenkinsci.remoting.engine.JnlpAgentEndpointResolver.noCertificateCheck=true"
     depends_on:
