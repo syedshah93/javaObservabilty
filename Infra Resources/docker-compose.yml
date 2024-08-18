@@ -1,0 +1,49 @@
+# this file is to spin up robust deployment infrastructure for deploying
+# Plan - can we also use standard Libraries concepts with jenkins, should be a part of jenkins
+#not working yet..
+
+version: "3.1"
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - "7100:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - ./Jenkins/init.groovy.d:/var/jenkins_home/init.groovy.d
+      - ./plugins.txt:/usr/share/jenkins/ref/plugins.txt
+    command: >
+      /bin/bash -c "jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt && /usr/bin/tini -- /usr/local/bin/jenkins.sh"
+      
+
+
+    environment:
+      JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"
+    networks:
+      - jenkins_network
+
+  jenkins-agent:
+    image: jenkins/inbound-agent
+    container_name: jenkins-agent
+    environment:
+
+      JENKINS_URL: http://jenkins:8080
+      JENKINS_AGENT_NAME: "agent-1"
+      JENKINS_AGENT_WORKDIR: "/home/jenkins"
+      JENKINS_SECRET: "a9f02f4f69fb2bdf956e506746add732be21e0b62eb05a356077865d9a97a038"  # Use the secret generated in Jenkins
+      JENKINS_AGENT_PORT: "50000"
+      JAVA_OPTS: "-Dorg.jenkinsci.remoting.engine.JnlpAgentEndpointResolver.noCertificateCheck=true"
+    depends_on:
+      - jenkins
+    networks:
+      - jenkins_network
+
+volumes:
+  jenkins_home:
+
+networks:
+  jenkins_network:
+    driver: bridge
