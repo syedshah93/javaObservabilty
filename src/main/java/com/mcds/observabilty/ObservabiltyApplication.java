@@ -8,6 +8,7 @@ public class ObservabiltyApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ObservabiltyApplication.class, args);
+        System.out.println("Hello World!");
     }
 
 }
