@@ -1,3 +1,2 @@
-blueocean
 sonar
 maven-plugin
