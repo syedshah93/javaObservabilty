@@ -1,0 +1,10 @@
+cloud:
+  aws:
+    region:
+      static: "US-EAST-1"
+    credentials:
+      secret-key: "here"
+      access-key: "akhere"
+
+application:
+  bucket-name: "here"
