@@ -26,17 +26,24 @@ services:
     image: jenkins/inbound-agent
     container_name: jenkins-agent
     environment:
-
       JENKINS_URL: http://jenkins:8080
       JENKINS_AGENT_NAME: "agent-1"
       JENKINS_AGENT_WORKDIR: "/home/jenkins"
-      JENKINS_SECRET: ""  # Use the secret generated in Jenkins
+      JENKINS_SECRET: "946caa1a241d63e3bda88ec82e8c95d77b6cba3e2aadfec865e5c5e358779df1 "  # Use the secret generated in Jenkins
       JENKINS_AGENT_PORT: "50000"
       JAVA_OPTS: "-Dorg.jenkinsci.remoting.engine.JnlpAgentEndpointResolver.noCertificateCheck=true"
     depends_on:
       - jenkins
     networks:
       - jenkins_network
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    environment:
+      - NGROK_AUTHTOKEN=2l7AKRcYxZq1gAp5ENvQSDx4zFo_3Zhr7cc6rvWD5J1sa9MzS
+    networks:
+      - jenkins_network
+    command: http jenkins:8080
 
 volumes:
   jenkins_home:
