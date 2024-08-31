@@ -37,13 +37,7 @@ services:
     networks:
       - jenkins_network
 
-  ngrok:
-    image: ngrok/ngrok:latest
-    environment:
-      - NGROK_AUTHTOKEN=2l7AKRcYxZq1gAp5ENvQSDx4zFo_3Zhr7cc6rvWD5J1sa9MzS
-    networks:
-      - jenkins_network
-    command: http jenkins:8080
+
 
 volumes:
   jenkins_home:
