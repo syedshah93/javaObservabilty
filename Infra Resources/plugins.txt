@@ -1,2 +1,3 @@
+github
 sonar
-maven-plugin
+pipeline-maven
