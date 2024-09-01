@@ -1,11 +1,11 @@
 package com.mcds.observabilty.utils;
 
 import com.mcds.observabilty.config.AWSConfig;
-import com.mcds.observabilty.exception.CustomException;
 import com.mcds.observabilty.services.impl.ObservabilityServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.ResponseTransformer;
@@ -33,6 +33,13 @@ public class S3Utils {
 
         Region region = Region.of(awsConfig.getRegion());
         S3Client s3Client = S3Client.builder().region(region).build();
+        String filePath = String.format("%s/%s","workdir/",fileName);
+        File file = new File(filePath);
+        File parentDir = file.getParentFile();
+
+        createDirectoryIfNotExists(parentDir);
+
+        FileSystemResource fileResource = new FileSystemResource(file);
         try {
 
             GetObjectRequest getObjectRequest = GetObjectRequest.builder()
@@ -43,7 +50,7 @@ public class S3Utils {
             logger.info("GetObjectRequest : {}", getObjectRequest);
 
             ResponseInputStream<GetObjectResponse> s3is = s3Client.getObject(getObjectRequest,  ResponseTransformer.toInputStream());
-            FileOutputStream fos = new FileOutputStream(new File(fileName));
+            FileOutputStream fos = new FileOutputStream(fileResource.getFile());
             byte[] read_buf = new byte[1024];
             int read_len = 0;
             while ((read_len = s3is.read(read_buf)) > 0) {
@@ -64,5 +71,17 @@ public class S3Utils {
            throw new RuntimeException(e);
         }
     }
+
+    static void createDirectoryIfNotExists(File parentDir) {
+        if (!parentDir.exists()) {
+            boolean created = parentDir.mkdirs(); // Create directory and any necessary but nonexistent parent directories
+            if (created) {
+                logger.info("Created directory: " + parentDir.getAbsolutePath());
+            } else {
+                logger.warn("Directory already exists or could not be created: " + parentDir.getAbsolutePath());
+            }
+        }
+    }
+
 
 }
