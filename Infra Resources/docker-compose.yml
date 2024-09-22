@@ -29,7 +29,7 @@ services:
       JENKINS_URL: http://jenkins:8080
       JENKINS_AGENT_NAME: "agent-1"
       JENKINS_AGENT_WORKDIR: "/home/jenkins"
-      JENKINS_SECRET: "946caa1a241d63e3bda88ec82e8c95d77b6cba3e2aadfec865e5c5e358779df1 "  # Use the secret generated in Jenkins
+      JENKINS_SECRET: "aee6e81568fb404adeda2e3ad0afb8133c7d56038a6bf5315433a4c0aa518c7f "  # Use the secret generated in Jenkins
       JENKINS_AGENT_PORT: "50000"
       JAVA_OPTS: "-Dorg.jenkinsci.remoting.engine.JnlpAgentEndpointResolver.noCertificateCheck=true"
     depends_on:

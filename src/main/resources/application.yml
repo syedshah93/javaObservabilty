@@ -1,10 +1,17 @@
+spring:
+  application:
+    name: Observabilty
+
+server:
+  port: 8086
+
 cloud:
   aws:
     region:
-      static: "US-EAST-1"
+      static: "us-east-2"
     credentials:
       secret-key: "here"
       access-key: "akhere"
 
 application:
-  bucket-name: "here"
+  bucket-name: "s3-accountb"

@@ -1,0 +1,30 @@
+Configuration:
+  status: WARN
+  Properties:
+    Property:
+      name: log-path
+      value: logs
+  Appenders:
+    Console:
+      name: ConsoleAppender
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: "%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"
+    RollingFile:
+      name: FileAppender
+      fileName: "${log-path}/app.log"
+      filePattern: "${log-path}/app-%d{yyyy-MM-dd}-%i.log"
+      PatternLayout:
+        pattern: "%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"
+      Policies:
+        TimeBasedTriggeringPolicy:
+          interval: 1
+          modulate: true
+        SizeBasedTriggeringPolicy:
+          size: 10 MB
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        - ref: ConsoleAppender
+        - ref: FileAppender
